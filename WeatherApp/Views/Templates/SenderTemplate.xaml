@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:WeatherApp.Models"
+             x:DataType="model:ChatMessageModel"
+             x:Class="WeatherApp.Views.Templates.SenderTemplate">
+    <HorizontalStackLayout
+        HorizontalOptions="End">
+        <Border
+            StrokeShape="RoundRectangle 10"
+            BackgroundColor="Beige"
+            Padding="12">
+            <Label 
+                Text="{Binding Text}">
+            </Label>
+        </Border>
+    </HorizontalStackLayout>
+</ContentView>

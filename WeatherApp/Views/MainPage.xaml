@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WeatherApp.ViewModels"
+             x:DataType="viewmodel:MainPageViewModel"
+             x:Class="WeatherApp.MainPage">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TitleLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="20"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="30,0"
+                Spacing="25"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Button
+                    Text="Load Default Weather"
+                    Command="{Binding GetDefaultWeatherCommand}"></Button>
+                
+                <Label
+                    Text="{Binding Weather}"
+                    Style="{StaticResource TitleLabelStyle}"/>
+                <Label
+                    Text="{Binding Temperature}"
+                    Style="{StaticResource TitleLabelStyle}"/>
+                <Label
+                    Text="{Binding Humidity}"
+                    Style="{StaticResource TitleLabelStyle}"/>
+                
+                <Entry
+                    Placeholder="Typing CityName"></Entry>
+                
+                <Button
+                    Text="Load Chosen City "></Button>
+                
+                <ActivityIndicator
+                    IsRunning="{Binding IsLoading}"
+                    IsVisible="{Binding IsLoading}" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

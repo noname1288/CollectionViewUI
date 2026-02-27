@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:WeatherApp.ViewModels"
+             xmlns:templates="clr-namespace:WeatherApp.Views.Templates"
+             x:DataType="viewmodel:ListSomeThingPageViewModel"
+             x:Class="WeatherApp.Views.ListSomethingPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="SenderMessageItemTemplate">
+                <templates:SenderTemplate />
+            </DataTemplate>
+
+            <DataTemplate x:Key="ReceiverMessageItemTemplate">
+                <templates:ReceiverTemplate />
+            </DataTemplate>
+
+            <templates:MessageTemplateSelector
+                x:Key="MessageDataTemplateSelector"
+                SenderDataTemplate="{StaticResource SenderMessageItemTemplate}"
+                ReceiverDataTemplate="{StaticResource ReceiverMessageItemTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid
+            RowDefinitions="*, Auto,  Auto">
+            <!-- LIST MESSAGES-->
+            <Grid
+                VerticalOptions="End">
+                <CollectionView
+                    x:Name="MessagesList"
+                    Margin="12, 24"
+                    ItemsSource="{Binding ChatMessages}"
+                    VerticalScrollBarVisibility="Never"
+                    Scrolled="MessagesList_Scrolled"
+                    ItemsUpdatingScrollMode="KeepItemsInView"
+                    ItemTemplate="{StaticResource MessageDataTemplateSelector}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout
+                            Orientation="Vertical"
+                            ItemSpacing="12">
+                        </LinearItemsLayout>
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
+            </Grid>
+
+            <Button
+                x:Name="NewMessageButton"
+                Grid.Row="1"
+                IsVisible="False"
+                Clicked="OnNewClicked"
+                Text="New message"
+                VerticalOptions="End"
+                HorizontalOptions="Center" 
+                Margin="0,0,0,8">
+            </Button>
+
+            <!-- TYPE TEXT -->
+            <Grid
+                Padding="12,0"
+                Grid.Row="2">
+                <Grid
+                    ColumnDefinitions="Auto, *, Auto">
+                    <Button
+                        Grid.Column="0"
+                        Margin="12,0"
+                        Text="Receive"
+                        Command="{Binding AddPartnerMessageCommand}">
+                    </Button>
+
+                    <Entry
+                        Grid.Column="1"
+                        Text="{Binding TextEntry}"
+                        Placeholder="Type your message">
+                    </Entry>
+
+                    <Button
+                        Grid.Column="2"
+                        Margin="12,0"
+                        Text="Send"
+                        Command="{Binding AddMessageCommand}">
+                    </Button>
+
+                </Grid>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

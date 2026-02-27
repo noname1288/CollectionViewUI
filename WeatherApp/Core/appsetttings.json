@@ -1,0 +1,6 @@
+{
+  "ApiSettings": {
+    "BaseUrl": "https://api.openweathermap.org/data/2.5/",
+    "ApiKey": "your_real_key"
+  }
+}
