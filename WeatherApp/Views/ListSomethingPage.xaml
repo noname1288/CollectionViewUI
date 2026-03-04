@@ -24,26 +24,31 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid
+            x:Name="MainGrid"
+            Padding="0,12,0,0"
             RowDefinitions="*, Auto,  Auto">
+            
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnMessagesTapped" />
+            </Grid.GestureRecognizers>
             <!-- LIST MESSAGES-->
-            <Grid
-                VerticalOptions="End">
-                <CollectionView
-                    x:Name="MessagesList"
-                    Margin="12, 24"
-                    ItemsSource="{Binding ChatMessages}"
-                    VerticalScrollBarVisibility="Never"
-                    Scrolled="MessagesList_Scrolled"
-                    ItemsUpdatingScrollMode="KeepItemsInView"
-                    ItemTemplate="{StaticResource MessageDataTemplateSelector}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
-                            Orientation="Vertical"
-                            ItemSpacing="12">
-                        </LinearItemsLayout>
-                    </CollectionView.ItemsLayout>
-                </CollectionView>
-            </Grid>
+
+            <CollectionView
+                x:Name="MessagesList"
+                Grid.Row="0"
+                Margin="16,0"
+                ItemsSource="{Binding ChatMessages}"
+                VerticalScrollBarVisibility="Always"
+                Scrolled="MessagesList_Scrolled"
+                ItemsUpdatingScrollMode="KeepItemsInView"
+                ItemTemplate="{StaticResource MessageDataTemplateSelector}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                        Orientation="Vertical"
+                        ItemSpacing="12">
+                    </LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+            </CollectionView>
 
             <Button
                 x:Name="NewMessageButton"
@@ -52,16 +57,17 @@
                 Clicked="OnNewClicked"
                 Text="New message"
                 VerticalOptions="End"
-                HorizontalOptions="Center" 
+                HorizontalOptions="Center"
                 Margin="0,0,0,8">
             </Button>
 
             <!-- TYPE TEXT -->
             <Grid
-                Padding="12,0"
+                Padding="12,12"
+                BackgroundColor="AntiqueWhite"
                 Grid.Row="2">
                 <Grid
-                    ColumnDefinitions="Auto, *, Auto">
+                    ColumnDefinitions="Auto, *, Auto, Auto">
                     <Button
                         Grid.Column="0"
                         Margin="12,0"
@@ -70,6 +76,7 @@
                     </Button>
 
                     <Entry
+                        x:Name="MessageEntry"
                         Grid.Column="1"
                         Text="{Binding TextEntry}"
                         Placeholder="Type your message">
@@ -80,6 +87,12 @@
                         Margin="12,0"
                         Text="Send"
                         Command="{Binding AddMessageCommand}">
+                    </Button>
+                    
+                    <Button
+                        Grid.Column="3"
+                        Margin="12,0"
+                        Text="ShowDialog">
                     </Button>
 
                 </Grid>

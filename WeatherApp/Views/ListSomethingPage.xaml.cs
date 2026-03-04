@@ -1,3 +1,8 @@
+#if IOS
+using UIKit;
+#endif
+
+using Microsoft.Maui.Platform;
 using WeatherApp.Models;
 using WeatherApp.ViewModels;
 
@@ -23,6 +28,44 @@ public partial class ListSomethingPage : ContentPage
 
         _viewModel.ExternalMessageReceived += OnExternalMessageReceived;
         _viewModel.ScrollToBottomRequested += ScrollToBottomRequested;
+        
+#if IOS
+        KeyboardAutoManagerScroll.Disconnect();
+
+        // UIKeyboard.Notifications.ObserveWillShow((sender, args) => {
+        //     var keyboardHeight = args.FrameEnd.Height;
+        //     MessagesList.TranslationY = keyboardHeight;
+        // });
+        //
+        // UIKeyboard.Notifications.ObserveWillHide((sender, args) => {
+        //     MessagesList.TranslationY = 0;
+        // });
+
+        UIKit.UIKeyboard.Notifications.ObserveWillShow((sender, args) =>
+        {
+            var keyboardHeight = args.FrameEnd.Height ;
+
+            MainThread.BeginInvokeOnMainThread(() => { MainGrid.Margin = new Thickness(0, 0, 0, keyboardHeight); });
+        });
+        
+        UIKit.UIKeyboard.Notifications.ObserveWillHide((sender, args) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                MainGrid.Margin = new Thickness(0);
+            });
+        });
+
+        UIKit.UIKeyboard.Notifications.ObserveDidHide((sender, args) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                MainGrid.Margin = new Thickness(0);
+            });
+        });
+
+#endif
+        Console.WriteLine(DateTime.Now.Ticks);
 
     }
 
@@ -31,6 +74,10 @@ public partial class ListSomethingPage : ContentPage
         base.OnDisappearing();
         _viewModel.ExternalMessageReceived -= OnExternalMessageReceived;
         _viewModel.ScrollToBottomRequested -= ScrollToBottomRequested;
+        
+#if IOS
+        KeyboardAutoManagerScroll.Connect();
+#endif
     }
 
     private void OnExternalMessageReceived(ChatMessageModel obj)
@@ -108,5 +155,18 @@ public partial class ListSomethingPage : ContentPage
         HideNotification();
         
         ScrollToBottom();
+    }
+    
+    private void OnMessagesTapped(object sender, TappedEventArgs e)
+    {
+        HideKeyboard();
+    }
+
+    private void HideKeyboard()
+    {
+        if (MessageEntry.IsFocused)
+        {
+            MessageEntry.Unfocus();
+        }
     }
 }
